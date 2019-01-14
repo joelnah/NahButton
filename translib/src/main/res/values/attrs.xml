@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TextViewNahDrawable">
+        <attr name="drawableWidth" format="dimension"/>
+        <attr name="drawableHeight" format="dimension"/>
+        <attr name="drawableStartVector" format="reference" />
+        <attr name="drawableTopVector" format="reference" />
+        <attr name="drawableEndVector" format="reference" />
+        <attr name="drawableBottomVector" format="reference" />
+        <attr name="drawableTint" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="NahButton">
+        <attr name="nah_round" format="integer"/>
+        <attr name="nah_scale" format="float"/>
+        <attr name="nah_startColor" format="color"/>
+        <attr name="nah_midColor" format="color"/>
+        <attr name="nah_endColor" format="color"/>
+        <attr name="nah_effectColor" format="color"/>
+        <attr name="nah_stroke" format="integer"/>
+        <attr name="nah_strokeColor" format="color"/>
+        <attr name="nah_duration" format="integer"/>
+
+        <attr name="nah_labelText" format="string"/>
+        <attr name="nah_labelColor" format="color"/>
+        <attr name="nah_labelColorClick" format="color"/>
+        <attr name="nah_labelSize" format="integer"/>
+        <attr name="nah_upEffect" format="boolean"/>
+        <attr name="nah_animationType" format="enum">
+            <enum name="gradient" value="0"/>
+            <enum name="single" value="1"/>
+            <enum name="none" value="2"/>
+        </attr>
+        <attr name="nah_labelStyle" format="enum">
+            <enum name="normal" value="0"/>
+            <enum name="bold" value="1"/>
+            <enum name="italic" value="2"/>
+        </attr>
+        <attr name="nah_count" format="enum">
+            <enum name="infinite" value="0"/>
+            <enum name="restart" value="1"/>
+            <enum name="reverse" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="NahLayout">
+        <attr name="layout_round" format="integer"/>
+        <attr name="layout_scale" format="float"/>
+        <attr name="layout_startColor" format="color"/>
+        <attr name="layout_midColor" format="color"/>
+        <attr name="layout_endColor" format="color"/>
+        <attr name="layout_duration" format="integer"/>
+        <attr name="layout_upEffect" format="boolean"/>
+        <attr name="layout_animationType" format="enum">
+            <enum name="gradient" value="0"/>
+            <enum name="single" value="1"/>
+            <enum name="none" value="2"/>
+        </attr>
+        <attr name="layout_count" format="enum">
+            <enum name="infinite" value="0"/>
+            <enum name="restart" value="1"/>
+            <enum name="reverse" value="2"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="NahImageView">
+        <attr name="imageview_scale" format="float"/>
+        <attr name="imageview_colorFilter" format="color"/>
+        <attr name="imageview_duration" format="integer"/>
+        <attr name="imageview_img" format="integer"/>
+        <attr name="imageview_imgPress" format="integer"/>
+    </declare-styleable>
+
+</resources>
