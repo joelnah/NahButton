@@ -1,4 +1,7 @@
 # NahButton
+[![](https://jitpack.io/v/joelnah/NahButton.svg)](https://jitpack.io/#joelnah/NahButton)
+
+implementation 'com.github.joelnah:NahButton:Tag'
 
     <nah.prayer.translib.NahImageView
         android:id="@+id/iv"
