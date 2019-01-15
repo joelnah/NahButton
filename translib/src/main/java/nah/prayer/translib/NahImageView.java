@@ -8,6 +8,9 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import nah.prayer.translib.status.ClickStat;
+import nah.prayer.translib.status.ParentType;
+
 public class NahImageView extends AppCompatImageView {
 
     private AppCompatImageView view;
@@ -15,6 +18,12 @@ public class NahImageView extends AppCompatImageView {
     private int color;
     private Drawable img, imgPress;
     private Util util;
+    private ParentType parentType;
+    boolean check;
+    int downX,downY;
+    private TransAnimation trans;
+    private InfoModel model;
+    private ClickStat stat;
     private TransTouchListener transTouchListener;
 
     public NahImageView(Context context) {
@@ -40,6 +49,8 @@ public class NahImageView extends AppCompatImageView {
         view.setClickable(true);
         util = new Util();
         util.setLocation(view);
+        trans = new TransAnimation();
+        model = new InfoModel();
     }
 
     private void getAttrs(AttributeSet attrs){
@@ -55,31 +66,57 @@ public class NahImageView extends AppCompatImageView {
         color = typeArray.getColor(R.styleable.NahImageView_imageview_colorFilter, Color.TRANSPARENT);
         img = typeArray.getDrawable(R.styleable.NahImageView_imageview_img);
         imgPress = typeArray.getDrawable(R.styleable.NahImageView_imageview_imgPress);
-
         if(img!=null)
             view.setImageDrawable(img);
+
+        model.view = this;
+        model.scale = scale;
     }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        parentType = util.getParentType(getParent());
+    }
+
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
 
         int x = (int)event.getRawX();
         int y = (int)event.getRawY();
-
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                stat = ClickStat.DOWN;
+                downX = x;
+                downY = y;
                 util.isViewInBounds(view, x, y);
                 setView(true);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(util.isViewInBounds(x, y)) {
-                    setView(true);
-                }else{
-                    setView(false);
+                stat = ClickStat.MOVE;
+                switch (parentType){
+                    case H:
+                        if(Math.abs(x-downX)>30 || !util.isViewInBounds(this, x, y))
+                            setView(false);
+                        break;
+                    case V:
+                        if(Math.abs(y-downY)>30 || !util.isViewInBounds(this, x, y))
+                            setView(false);
+                        break;
+                    case NOTHING:
+                        if(util.isViewInBounds(x, y)) {
+                            setView(true);
+                        }else{
+                            setView(false);
+                        }
+                        break;
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if(util.isViewInBounds(view, x, y)) {
+                stat = ClickStat.UP;
+                if(check) {
                     if (transTouchListener != null) {
                         transTouchListener.onTouch();
                     }
@@ -95,15 +132,17 @@ public class NahImageView extends AppCompatImageView {
         if(bool){
             if(imgPress!=null)
                 view.setImageDrawable(imgPress);
+            if(stat == ClickStat.DOWN)
+                trans.setScale(model, stat);
+            check = true;
             view.setColorFilter(color);
-            this.setScaleX(scale);
-            this.setScaleY(scale);
         }else{
             if(img!=null)
                 view.setImageDrawable(img);
+            if(stat == ClickStat.UP)
+                trans.setScale(model, stat);
+            check = false;
             view.setColorFilter(Color.TRANSPARENT);
-            this.setScaleX(1f);
-            this.setScaleY(1f);
         }
 
     }

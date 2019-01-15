@@ -15,6 +15,7 @@ import nah.prayer.translib.helper.DrawableEnriched;
 import nah.prayer.translib.helper.NahDrawableHelper;
 import nah.prayer.translib.status.AnimationType;
 import nah.prayer.translib.status.ClickStat;
+import nah.prayer.translib.status.ParentType;
 
 public class NahButton extends AppCompatButton  implements DrawableEnriched {
 
@@ -29,11 +30,13 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
     private int labelColorClick;
     private boolean upEffect;
     private TransAnimation trans;
-    private ValueAnimator animator;
     private InfoModel model;
+    private ValueAnimator animator;
     private ClickStat stat;
     private AnimationType aniType;
-
+    private ParentType parentType;
+    boolean check;
+    int downX,downY;
     private Util util;
 
     private TransTouchListener transTouchListener;
@@ -176,27 +179,49 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        parentType = util.getParentType(getParent());
+    }
+
+
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         int x = (int)event.getRawX();
         int y = (int)event.getRawY();
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                downX = x;
+                downY = y;
                 stat = ClickStat.DOWN;
                 util.isViewInBounds(view, x, y);
                 setView(true);
                 break;
             case MotionEvent.ACTION_MOVE:
                 stat = ClickStat.MOVE;
-                if(util.isViewInBounds(x, y)) {
-                    setView(true);
-                }else{
-                    setView(false);
+                switch (parentType){
+                    case H:
+                        if(Math.abs(x-downX)>30 || !util.isViewInBounds(this, x, y))
+                            setView(false);
+                        break;
+                    case V:
+                        if(Math.abs(y-downY)>30 || !util.isViewInBounds(this, x, y))
+                            setView(false);
+                        break;
+                    case NOTHING:
+                        if(util.isViewInBounds(x, y)) {
+                            setView(true);
+                        }else{
+                            setView(false);
+                        }
+                        break;
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 stat = ClickStat.UP;
-                if(util.isViewInBounds(view, x, y)) {
+                if(check) {
                     if (transTouchListener != null) {
                         transTouchListener.onTouch();
                     }
@@ -210,6 +235,7 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
     private void setView(boolean bool){
         if(bool){
             if(stat == ClickStat.DOWN) {
+                trans.setScale(model, stat);
                 switch (aniType){
                     case GRADIENT:
                         if (!animator.isRunning())
@@ -225,12 +251,11 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
 
             }
             this.setTextColor(labelColorClick);
-            this.setScaleX(scale);
-            this.setScaleY(scale);
+            check = true;
         }else{
 
             if(stat == ClickStat.UP) {
-
+                trans.setScale(model, stat);
                 switch (aniType) {
                     case GRADIENT:
                         if (animator != null) {
@@ -250,9 +275,7 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
                 }
             }
             this.setTextColor(labelColor);
-
-            this.setScaleX(1f);
-            this.setScaleY(1f);
+            check = false;
 
 
 

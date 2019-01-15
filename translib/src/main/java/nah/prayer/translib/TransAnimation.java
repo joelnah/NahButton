@@ -2,8 +2,10 @@ package nah.prayer.translib;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.TimeAnimator;
 import android.animation.ValueAnimator;
+import android.util.Log;
 
 import nah.prayer.translib.status.ClickStat;
 
@@ -12,8 +14,8 @@ class TransAnimation {
     private final int duration = 200;
 
     void colorAniSingle(final InfoModel model, ClickStat stat) {
-        int startColor=0, endColor=0;
-        switch (stat){
+        int startColor = 0, endColor = 0;
+        switch (stat) {
             case DOWN:
                 startColor = model.startColor;
                 endColor = model.endColor;
@@ -50,7 +52,7 @@ class TransAnimation {
 
     }
 
-    void colorAniGradientEnd(final InfoModel model){
+    void colorAniGradientEnd(final InfoModel model) {
         final ArgbEvaluator evaluator = new ArgbEvaluator();
         ValueAnimator animator = TimeAnimator.ofFloat(0.0f, 1.0f);
         animator.setDuration(duration);
@@ -61,9 +63,9 @@ class TransAnimation {
             public void onAnimationUpdate(ValueAnimator animation) {
                 Float fraction = animation.getAnimatedFraction();
                 int start;
-                if(model.upEffect){
-                    start=(int) evaluator.evaluate(fraction, model.startColor, model.effectColor);
-                }else{
+                if (model.upEffect) {
+                    start = (int) evaluator.evaluate(fraction, model.startColor, model.effectColor);
+                } else {
                     start = (int) evaluator.evaluate(fraction, model.startColor, model.startColor);
                 }
                 int[] colors = {start, start};
@@ -71,13 +73,28 @@ class TransAnimation {
             }
         });
 
-animator.start();
+        animator.start();
     }
 
 
-    void upEffect(final InfoModel model){
+    void upEffect(final InfoModel model) {
         ObjectAnimator.ofObject(model.gradient, "color", new ArgbEvaluator(), model.effectColor, model.startColor)
                 .setDuration(duration).start();
     }
 
+    void setScale(final InfoModel model, ClickStat stat) {
+        float scale = 1f;
+        switch (stat) {
+            case DOWN:
+                scale = model.scale;
+                break;
+            case UP: break;
+            default: return;
+        }
+        ObjectAnimator.ofPropertyValuesHolder(model.view,
+                PropertyValuesHolder.ofFloat("scaleX", scale),
+                PropertyValuesHolder.ofFloat("scaleY", scale))
+                .setDuration(duration)
+                .start();
+    }
 }

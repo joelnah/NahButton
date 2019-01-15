@@ -15,6 +15,7 @@ import nah.prayer.translib.helper.DrawableEnriched;
 import nah.prayer.translib.helper.NahDrawableHelper;
 import nah.prayer.translib.status.AnimationType;
 import nah.prayer.translib.status.ClickStat;
+import nah.prayer.translib.status.ParentType;
 
 public class NahTextView extends AppCompatTextView implements DrawableEnriched {
 
@@ -33,7 +34,9 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
     private InfoModel model;
     private ClickStat stat;
     private AnimationType aniType;
-
+    private ParentType parentType;
+    boolean check;
+    int downX,downY;
     private Util util;
 
     private TransTouchListener transTouchListener;
@@ -174,67 +177,61 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
 
     }
 
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        parentType = util.getParentType(getParent());
+    }
+
+
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         int x = (int)event.getRawX();
         int y = (int)event.getRawY();
 
         if(event.getAction() == MotionEvent.ACTION_DOWN){
+            downX = x;
+            downY = y;
             stat = ClickStat.DOWN;
             util.isViewInBounds(view, x, y);
             setView(true);
             return true;
         }else if(event.getAction() == MotionEvent.ACTION_MOVE){
             stat = ClickStat.MOVE;
-            if(util.isViewInBounds(x, y)) {
-                setView(true);
-            }else{
-                setView(false);
+            switch (parentType){
+                case H:
+                    if(Math.abs(x-downX)>30 || !util.isViewInBounds(this, x, y))
+                        setView(false);
+                    break;
+                case V:
+                    if(Math.abs(y-downY)>30 || !util.isViewInBounds(this, x, y))
+                        setView(false);
+                    break;
+                case NOTHING:
+                    if(util.isViewInBounds(x, y)) {
+                        setView(true);
+                    }else{
+                        setView(false);
+                    }
+                    break;
             }
             return true;
         }else if(event.getAction() == MotionEvent.ACTION_UP){
             stat = ClickStat.UP;
-            if(util.isViewInBounds(view, x, y)) {
+            if(check) {
                 if (transTouchListener != null) {
                     transTouchListener.onTouch();
                 }
             }
             setView(false);
         }
-        /*
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                Log.d("nah", "ACTION_DOWN");
-                stat = ClickStat.DOWN;
-                util.isViewInBounds(view, x, y);
-                setView(true);
-
-                break;
-            case MotionEvent.ACTION_MOVE:
-                Log.d("nah", "ACTION_MOVE");
-                stat = ClickStat.MOVE;
-                if(util.isViewInBounds(x, y)) {
-                    setView(true);
-                }else{
-                    setView(false);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                Log.d("nah", "uouououououp");
-                stat = ClickStat.UP;
-                if(util.isViewInBounds(view, x, y)) {
-                    if (transTouchListener != null) {
-                        transTouchListener.onTouch();
-                    }
-                }
-                setView(false);
-                break;
-
-        }*/
         return super.dispatchTouchEvent(event);
     }
 
     private void setView(boolean bool){
+        trans.setScale(model, stat);
         if(bool){
             if(stat == ClickStat.DOWN) {
                 switch (aniType){
@@ -252,8 +249,7 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
 
             }
             this.setTextColor(labelColorClick);
-            this.setScaleX(scale);
-            this.setScaleY(scale);
+            check = true;
         }else{
 
             if(stat == ClickStat.UP) {
@@ -277,9 +273,7 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
                 }
             }
             this.setTextColor(labelColor);
-
-            this.setScaleX(1f);
-            this.setScaleY(1f);
+            check = false;
 
 
 
