@@ -134,15 +134,23 @@ public class NahLayout extends FrameLayout {
 
     private void setView(boolean bool) {
         if (bool) {
+           // Log.d("nah","sfasdfasdf");
             check = true;
+            if(stat == ClickStat.DOWN)
             trans.setScale(model, stat);
         } else {
+            if(parentType==ParentType.NOTHING){
+                if(stat == ClickStat.UP){
+                    trans.setScale(model, stat);
+                }
+            }else{
+                trans.setScale(model, stat);
+            }
             check = false;
-            trans.setScale(model, stat);
+
         }
 
     }
-
     public void setOnTouchListerer(TransTouchListener listerer) {
         this.transTouchListener = listerer;
     }

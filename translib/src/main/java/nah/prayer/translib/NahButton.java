@@ -9,6 +9,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import nah.prayer.translib.helper.DrawableEnriched;
@@ -36,6 +37,7 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
     private AnimationType aniType;
     private ParentType parentType;
     boolean check;
+    private boolean isClick=false;
     int downX,downY;
     private Util util;
 
@@ -232,6 +234,8 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
         return super.dispatchTouchEvent(event);
     }
 
+
+
     private void setView(boolean bool){
         if(bool){
             if(stat == ClickStat.DOWN) {
@@ -248,39 +252,53 @@ public class NahButton extends AppCompatButton  implements DrawableEnriched {
                         bgShape.setColor(endColor);
                         break;
                 }
-
+                isClick = true;
             }
             this.setTextColor(labelColorClick);
             check = true;
         }else{
-
-            if(stat == ClickStat.UP) {
-                trans.setScale(model, stat);
-                switch (aniType) {
-                    case GRADIENT:
-                        if (animator != null) {
-                            animator.end();
-                        }
-                        trans.colorAniGradientEnd(model);
-                        break;
-                    case SINGLE:
-                        trans.colorAniSingle(model, stat);
-                        break;
-                    case NONE:
-                        bgShape.setColor(startColor);
-                        break;
+            if(parentType==ParentType.NOTHING){
+                if(stat == ClickStat.UP){
+                    offSet();
                 }
-                if (upEffect && aniType != AnimationType.GRADIENT) {
-                    trans.upEffect(model);
-                }
+            }else{
+                offSet();
             }
-            this.setTextColor(labelColor);
             check = false;
-
 
 
         }
 
+    }
+
+
+    private void offSet(){
+
+        if(isClick) {
+            isClick = false;
+            trans.setScale(model, stat);
+            switch (aniType) {
+                case GRADIENT:
+                    if (animator != null) {
+                        animator.end();
+                    }
+                    trans.colorAniGradientEnd(model);
+                    break;
+                case SINGLE:
+                    trans.colorAniSingle(model, stat);
+                    break;
+                case NONE:
+                    bgShape.setColor(startColor);
+                    break;
+            }
+
+            if (upEffect && aniType != AnimationType.GRADIENT) {
+
+                trans.upEffect(model);
+            }
+
+            this.setTextColor(labelColor);
+        }
     }
 
     public void setOnTouchListerer(TransTouchListener listerer){

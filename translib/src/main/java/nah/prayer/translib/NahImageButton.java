@@ -142,16 +142,24 @@ public class NahImageButton extends AppCompatImageButton {
         }else{
             if(img!=null)
                 view.setImageDrawable(img);
-            if(stat == ClickStat.UP)
-                trans.setScale(model, stat);
-            trans.setScale(model, stat);
+
+            if(parentType==ParentType.NOTHING){
+                if(stat == ClickStat.UP){
+                    offSet();
+                }
+            }else{
+                offSet();
+            }
             check = false;
-            view.setColorFilter(Color.TRANSPARENT);
+
         }
 
     }
 
-
+private void offSet(){
+    view.setColorFilter(Color.TRANSPARENT);
+    trans.setScale(model, stat);
+}
 
     public void setOnTouchListerer(TransTouchListener listerer){
         this.transTouchListener = listerer;

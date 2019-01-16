@@ -139,12 +139,22 @@ public class NahImageView extends AppCompatImageView {
         }else{
             if(img!=null)
                 view.setImageDrawable(img);
-            if(stat == ClickStat.UP)
-                trans.setScale(model, stat);
+
+            if(parentType==ParentType.NOTHING){
+                if(stat == ClickStat.UP){
+                    offSet();
+                }
+            }else{
+                offSet();
+            }
             check = false;
-            view.setColorFilter(Color.TRANSPARENT);
         }
 
+    }
+
+    private void offSet(){
+        view.setColorFilter(Color.TRANSPARENT);
+        trans.setScale(model, stat);
     }
 
 

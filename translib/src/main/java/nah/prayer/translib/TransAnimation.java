@@ -11,16 +11,27 @@ import nah.prayer.translib.status.ClickStat;
 
 class TransAnimation {
 
+    private boolean isMove = true;
     private final int duration = 200;
 
     void colorAniSingle(final InfoModel model, ClickStat stat) {
         int startColor = 0, endColor = 0;
         switch (stat) {
             case DOWN:
+                isMove=true;
                 startColor = model.startColor;
                 endColor = model.endColor;
                 break;
+            case MOVE:
+                if (isMove) {
+                    isMove = !isMove;
+                    startColor = model.endColor;
+                    endColor = model.startColor;
+                } else
+                    return;
+                break;
             case UP:
+                isMove=true;
                 startColor = model.endColor;
                 endColor = model.startColor;
                 break;
@@ -87,10 +98,21 @@ class TransAnimation {
         switch (stat) {
             case DOWN:
                 scale = model.scale;
+                isMove = true;
                 break;
-            case UP: break;
-            default: return;
+            case MOVE:
+                if (isMove) {
+                    isMove = !isMove;
+                } else
+                    return;
+                break;
+            case UP:
+                isMove = true;
+                break;
+            default:
+                return;
         }
+        Log.d("nah", stat.name());
         ObjectAnimator.ofPropertyValuesHolder(model.view,
                 PropertyValuesHolder.ofFloat("scaleX", scale),
                 PropertyValuesHolder.ofFloat("scaleY", scale))

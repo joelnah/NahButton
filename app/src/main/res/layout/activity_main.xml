@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -14,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:imageview_img="@mipmap/ic_launcher"
-        app:imageview_imgPress="@android:drawable/ic_media_play"
+        app:imageview_imgPress="@mipmap/ic_launcher"
         app:imageview_scale="0.9"
         app:imageview_colorFilter="#88234987"/>
 
@@ -23,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:imageview_img="@mipmap/ic_launcher"
-        app:imageview_imgPress="@android:drawable/ic_media_play"
+        app:imageview_imgPress="@mipmap/ic_launcher"
         app:imageview_scale="0.9"
         app:imageview_colorFilter="#88234987"/>
 
@@ -50,7 +52,12 @@
         app:nah_scale="0.9"
         app:nah_round="20"
         tools:text="NahButton"/>
-
+<LinearLayout
+android:layout_width="wrap_content"
+android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <nah.prayer.translib.NahLayout
         android:id="@+id/layout"
         android:layout_width="wrap_content"
@@ -77,18 +84,19 @@
             android:src="@mipmap/ic_launcher_round"/>
         </LinearLayout>
     </nah.prayer.translib.NahLayout>
-
+</LinearLayout>
+</LinearLayout>
     <nah.prayer.translib.NahTextView
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:padding="10dp"
-        android:drawableEnd="@mipmap/ic_launcher_round"
-        android:drawableRight="@mipmap/ic_launcher_round"
+        android:drawableTop="@mipmap/ic_launcher_round"
         app:nah_startColor="@android:color/holo_green_dark"
         app:nah_midColor="@android:color/white"
         app:nah_endColor="@android:color/holo_red_dark"
         app:nah_upEffect="true"
-        app:nah_animationType="gradient"
+        app:nah_animationType="single"
         app:nah_labelText="NahTextView"
         app:nah_stroke="4"
         app:nah_strokeColor="@android:color/holo_red_dark"
