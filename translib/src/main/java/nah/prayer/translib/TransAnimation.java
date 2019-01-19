@@ -12,7 +12,7 @@ import nah.prayer.translib.status.ClickStat;
 class TransAnimation {
 
     private boolean isMove = true;
-    private final int duration = 200;
+    //private final int duration = 200;
 
     void colorAniSingle(final InfoModel model, ClickStat stat) {
         int startColor = 0, endColor = 0;
@@ -66,7 +66,7 @@ class TransAnimation {
     void colorAniGradientEnd(final InfoModel model) {
         final ArgbEvaluator evaluator = new ArgbEvaluator();
         ValueAnimator animator = TimeAnimator.ofFloat(0.0f, 1.0f);
-        animator.setDuration(duration);
+        animator.setDuration(model.duration);
         animator.setRepeatCount(ValueAnimator.RESTART);
         animator.setRepeatMode(ValueAnimator.REVERSE);
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -90,7 +90,7 @@ class TransAnimation {
 
     void upEffect(final InfoModel model) {
         ObjectAnimator.ofObject(model.gradient, "color", new ArgbEvaluator(), model.effectColor, model.startColor)
-                .setDuration(duration).start();
+                .setDuration(model.duration).start();
     }
 
     void setScale(final InfoModel model, ClickStat stat) {
@@ -112,11 +112,10 @@ class TransAnimation {
             default:
                 return;
         }
-        Log.d("nah", stat.name());
         ObjectAnimator.ofPropertyValuesHolder(model.view,
                 PropertyValuesHolder.ofFloat("scaleX", scale),
                 PropertyValuesHolder.ofFloat("scaleY", scale))
-                .setDuration(duration)
+                .setDuration(model.duration)
                 .start();
     }
 }

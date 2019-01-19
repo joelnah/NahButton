@@ -14,7 +14,7 @@ import nah.prayer.translib.status.ParentType;
 public class NahImageView extends AppCompatImageView {
 
     private AppCompatImageView view;
-    private float scale = 0.9f;
+    private float scale;
     private int color;
     private Drawable img, imgPress;
     private Util util;
@@ -62,15 +62,16 @@ public class NahImageView extends AppCompatImageView {
         setTypeArray(typedArray);
     }
     private void setTypeArray(TypedArray typeArray){
-        scale = typeArray.getFloat(R.styleable.NahImageView_imageview_scale, scale);
-        color = typeArray.getColor(R.styleable.NahImageView_imageview_colorFilter, Color.TRANSPARENT);
-        img = typeArray.getDrawable(R.styleable.NahImageView_imageview_img);
-        imgPress = typeArray.getDrawable(R.styleable.NahImageView_imageview_imgPress);
+        scale = typeArray.getFloat(R.styleable.NahImageView_image_scale, 1f);
+        color = typeArray.getColor(R.styleable.NahImageView_image_colorFilter, Color.TRANSPARENT);
+        img = typeArray.getDrawable(R.styleable.NahImageView_image_img);
+        imgPress = typeArray.getDrawable(R.styleable.NahImageView_image_imgPress);
         if(img!=null)
             view.setImageDrawable(img);
 
         model.view = this;
         model.scale = scale;
+        model.duration = typeArray.getInt(R.styleable.NahImageView_image_duration, 0);
     }
 
     @Override

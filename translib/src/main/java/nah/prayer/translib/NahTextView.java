@@ -9,8 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.DrawableRes;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
+
 import nah.prayer.translib.helper.DrawableEnriched;
 import nah.prayer.translib.helper.NahDrawableHelper;
 import nah.prayer.translib.status.AnimationType;
@@ -86,7 +86,7 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
         int effectColor = typeArray.getInt(R.styleable.NahButton_nah_effectColor, Color.WHITE);
         int midColor = typeArray.getInt(R.styleable.NahButton_nah_midColor, Color.WHITE);
         endColor = typeArray.getInt(R.styleable.NahButton_nah_endColor, Color.DKGRAY);
-        int duration = typeArray.getInt(R.styleable.NahButton_nah_duration, 500);
+        int duration = typeArray.getInt(R.styleable.NahButton_nah_duration, 0);
         int labelSize = typeArray.getInt(R.styleable.NahButton_nah_labelSize, 10);
         int labelStyle = typeArray.getInt(R.styleable.NahButton_nah_labelStyle, 0);
         view.setTextSize(labelSize);
@@ -111,10 +111,10 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
         scale = typeArray.getFloat(R.styleable.NahButton_nah_scale, 1f);
         view.setText(labelText);
 
-        labelColor = typeArray.getInt(R.styleable.NahButton_nah_labelColor, Color.WHITE);
+        labelColor = typeArray.getInt(R.styleable.NahButton_nah_labelColor, Color.BLACK);
         view.setTextColor(labelColor);
 
-        labelColorClick = typeArray.getInt(R.styleable.NahButton_nah_labelColorClick, Color.WHITE);
+        labelColorClick = typeArray.getInt(R.styleable.NahButton_nah_labelColorClick, labelColor);
 
         upEffect = typeArray.getBoolean(R.styleable.NahButton_nah_upEffect, false);
 
@@ -235,17 +235,20 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
 
         if(bool){
             if(stat == ClickStat.DOWN) {
-                trans.setScale(model, stat);
                 this.setTextColor(labelColorClick);
                 switch (aniType){
                     case GRADIENT:
+                        trans.setScale(model, stat);
                         if (!animator.isRunning())
                             animator.start();
                         break;
                     case SINGLE:
+                        trans.setScale(model, stat);
                         trans.colorAniSingle(model,stat);
                         break;
                     case NONE:
+                        this.setScaleX(scale);
+                        this.setScaleY(scale);
                         bgShape.setColor(endColor);
                         break;
                 }
@@ -273,18 +276,22 @@ public class NahTextView extends AppCompatTextView implements DrawableEnriched {
 
         if(isClick) {
             isClick = false;
-            trans.setScale(model, stat);
+
             switch (aniType) {
                 case GRADIENT:
+                    trans.setScale(model, stat);
                     if (animator != null) {
                         animator.end();
                     }
                     trans.colorAniGradientEnd(model);
                     break;
                 case SINGLE:
+                    trans.setScale(model, stat);
                     trans.colorAniSingle(model, stat);
                     break;
                 case NONE:
+                    this.setScaleX(1f);
+                    this.setScaleY(1f);
                     bgShape.setColor(startColor);
                     break;
             }

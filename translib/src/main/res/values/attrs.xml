@@ -45,31 +45,16 @@
     </declare-styleable>
 
     <declare-styleable name="NahLayout">
-        <attr name="layout_round" format="integer"/>
         <attr name="layout_scale" format="float"/>
-        <attr name="layout_startColor" format="color"/>
-        <attr name="layout_midColor" format="color"/>
-        <attr name="layout_endColor" format="color"/>
         <attr name="layout_duration" format="integer"/>
-        <attr name="layout_upEffect" format="boolean"/>
-        <attr name="layout_animationType" format="enum">
-            <enum name="gradient" value="0"/>
-            <enum name="single" value="1"/>
-            <enum name="none" value="2"/>
-        </attr>
-        <attr name="layout_count" format="enum">
-            <enum name="infinite" value="0"/>
-            <enum name="restart" value="1"/>
-            <enum name="reverse" value="2"/>
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="NahImageView">
-        <attr name="imageview_scale" format="float"/>
-        <attr name="imageview_colorFilter" format="color"/>
-        <attr name="imageview_duration" format="integer"/>
-        <attr name="imageview_img" format="integer"/>
-        <attr name="imageview_imgPress" format="integer"/>
+        <attr name="image_scale" format="float"/>
+        <attr name="image_colorFilter" format="color"/>
+        <attr name="image_duration" format="integer"/>
+        <attr name="image_img" format="integer"/>
+        <attr name="image_imgPress" format="integer"/>
     </declare-styleable>
 
 </resources>

@@ -3,11 +3,9 @@ package nah.prayer.translib;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import nah.prayer.translib.status.ClickStat;
@@ -72,6 +70,7 @@ public class NahLayout extends FrameLayout {
 
         model.view = this;
         model.scale = scale;
+        model.duration = typeArray.getInt(R.styleable.NahLayout_layout_duration, 0);
     }
 
 
